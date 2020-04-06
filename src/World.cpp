@@ -88,9 +88,17 @@ void World::update()
 		}
 	}
 	
-	if (m_snake.getLives() == 0 || position.x == 0 || position.y == 0 || position.x == m_size.x/unsigned(m_blockSize)-1 || position.y == m_size.y/unsigned(m_blockSize)-1)
+	if (position.x == 0 || position.y == 0 || position.x == m_size.x/unsigned(m_blockSize)-1 || position.y == m_size.y/unsigned(m_blockSize)-1)
 	{
-		m_snake.lose();
+		m_snake.cancel();
+		m_snake.autoRotate(m_size.x/unsigned(m_blockSize)-1, m_size.y/unsigned(m_blockSize)-1);
+		m_snake.decreaseLife();
+		update();
+	}
+	
+	if (!m_snake.isAlive())
+	{
+		m_snake.reset();
 		m_score.add("Score: " + std::to_string(m_snake.getScore()));
 	}
 }

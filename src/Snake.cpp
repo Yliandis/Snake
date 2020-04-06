@@ -13,6 +13,22 @@ Snake::~Snake()
 	saveBestScore();
 }
 
+void Snake::reset()
+{
+	m_body.clear();
+	
+	m_body.push_back({8u, 8u});
+	m_body.push_back({8u, 7u});
+	m_body.push_back({8u, 6u});
+	m_body.push_back({8u, 5u});
+	
+	m_direction = Direction::None;
+	m_speed = 12.f;
+	m_score = 0;
+	m_lives = 3;
+	m_isAlive = true;
+}
+
 void Snake::tick()
 {
 	if (m_body.empty() || m_direction == Direction::None)
@@ -90,7 +106,6 @@ void Snake::speedUp()
 void Snake::lose()
 {
 	m_isAlive = false;
-	reset();
 }
 
 void Snake::setDirection(Direction direction)
@@ -120,6 +135,16 @@ void Snake::increaseScore()
 	if (m_score > m_bestScore)
 	{
 		m_bestScore = m_score;
+	}
+}
+
+void Snake::decreaseLife()
+{
+	--m_lives;
+	
+	if (m_lives == 0)
+	{
+		lose();
 	}
 }
 
@@ -164,9 +189,9 @@ bool Snake::isAlive() const
 	return m_isAlive;
 }
 
-/******************************
- * Special collision function *
- *****************************/
+/*******************
+ * Special methods *
+ *******************/
 
 bool Snake::collides(sf::Vector2u position) const
 {	
@@ -179,6 +204,103 @@ bool Snake::collides(sf::Vector2u position) const
 	}
 	
 	return false;
+}
+
+void Snake::cancel()
+{
+	for (unsigned i = 0 ; i < m_body.size() - 1 ; ++i)
+	{
+		m_body[i].position = m_body[i+1].position;
+	}
+	
+	m_body.pop_back();
+}
+
+void Snake::autoRotate(unsigned maxX, unsigned maxY)
+{
+	if (m_body.empty())
+	{
+		lose();
+	}
+	
+	std::map<Direction, bool> possibleDirections;
+	possibleDirections[Direction::Up] = true;
+	possibleDirections[Direction::Down] = true;
+	possibleDirections[Direction::Left] = true;
+	possibleDirections[Direction::Right] = true;
+	
+	possibleDirections[m_direction] = false;
+	
+	switch (getPhysicalDirection())
+	{
+		case Direction::Up:
+		case Direction::Down:
+			possibleDirections[Direction::Up] = false;
+			possibleDirections[Direction::Down] = false;
+			break;
+		
+		case Direction::Left:
+		case Direction::Right:
+			possibleDirections[Direction::Left] = false;
+			possibleDirections[Direction::Right] = false;
+			break;
+		
+		default:
+			break;
+	}
+	
+	sf::Vector2u headPosition = m_body.front().position;
+	
+	if (headPosition.x <= 1)
+	{
+		possibleDirections[Direction::Left] = false;
+	}
+	else if (headPosition.x >= maxX - 1)
+	{
+		possibleDirections[Direction::Right] = false;
+	}
+	
+	if (headPosition.y <= 1)
+	{
+		possibleDirections[Direction::Up] = false;
+	}
+	else if (headPosition.y >= maxY - 1)
+	{
+		possibleDirections[Direction::Down] = false;
+	}
+	
+	// makes sure to take a direction
+	for (auto dir : possibleDirections)
+	{
+		if (dir.second)
+		{
+			m_direction = dir.first;
+		}
+	}
+	
+	// goes where there is the most place
+	if (possibleDirections[Direction::Left] && possibleDirections[Direction::Right])
+	{
+		if (headPosition.x > maxX - headPosition.x)
+		{
+			m_direction = Direction::Left;
+		}
+		else
+		{
+			m_direction = Direction::Right;
+		}
+	}
+	if (possibleDirections[Direction::Up] && possibleDirections[Direction::Down])
+	{
+		if (headPosition.y > maxY - headPosition.y)
+		{
+			m_direction = Direction::Up;
+		}
+		else
+		{
+			m_direction = Direction::Down;
+		}
+	}
 }
 
 /*******************
@@ -219,23 +341,13 @@ Direction Snake::getPhysicalDirection() const
 	}
 }
 
-void Snake::reset()
-{
-	m_body.clear();
-	
-	m_body.push_back({5u, 7u});
-	m_body.push_back({5u, 6u});
-	m_body.push_back({5u, 5u});
-	
-	m_direction = Direction::None;
-	m_speed = 12.f;
-	m_score = 0;
-	m_lives = 3;
-	m_isAlive = true;
-}
-
 void Snake::move()
 {
+	if (m_body.empty())
+	{
+		return;
+	}
+	
 	for (unsigned i = m_body.size() - 1 ; i > 0 ; --i)
 	{
 		m_body[i].position = m_body[i-1].position;
@@ -279,17 +391,13 @@ void Snake::checkCollisions()
 }
 
 void Snake::cut(unsigned segments)
-{
-	--m_lives;
-	if (m_lives == 0)
-	{
-		m_isAlive = false;
-	}
-	
+{	
 	for (unsigned i = 0 ; i < segments ; ++i)
 	{
 		m_body.pop_back();
 	}
+	
+	decreaseLife();
 }
 
 void Snake::draw(sf::RenderTarget& target, sf::RenderStates states) const

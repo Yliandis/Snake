@@ -4,6 +4,7 @@ Game::Game()
 : m_window (sf::VideoMode (800, 632), "Snake", sf::Style::Default)
 , m_elapsedTime (sf::Time::Zero)
 , m_world ({800u, 608u}, 16)
+, m_isPaused (false)
 { }
 
 void Game::run()
@@ -18,7 +19,10 @@ void Game::run()
 		while (m_elapsedTime > m_world.getUpdateTime())
 		{
 			m_elapsedTime -= m_world.getUpdateTime();
-			update();
+			if (!m_isPaused)
+			{
+				update();
+			}
 		}
 		
 		render();
@@ -53,9 +57,16 @@ void Game::handleWindowEvents()
 		{
 			m_window.close();
 		}
-		else if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
+		else if (event.type == sf::Event::KeyPressed)
 		{
-			m_window.close();
+			if (event.key.code == sf::Keyboard::Escape)
+			{
+				m_window.close();
+			}
+			else if (event.key.code == sf::Keyboard::Space)
+			{
+				m_isPaused = !m_isPaused;
+			}
 		}
 	}
 }

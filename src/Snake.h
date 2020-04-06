@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 
 #include <vector>
+#include <map>
 #include <fstream>
 #include <stdexcept>
 
@@ -34,6 +35,8 @@ class Snake : public sf::Drawable
 		Snake(float blockSize);
 		~Snake();
 		
+		void reset();
+		
 		void tick();
 		
 		void extend();
@@ -42,6 +45,7 @@ class Snake : public sf::Drawable
 		void lose();
 		void setDirection(Direction);
 		void increaseScore();
+		void decreaseLife();
 		
 		sf::Vector2u getPosition() const;
 		float getSpeed() const;
@@ -52,11 +56,12 @@ class Snake : public sf::Drawable
 		
 		bool collides(sf::Vector2u) const;
 		
+		void cancel();
+		void autoRotate(unsigned, unsigned);
+		
 	private:
 		
 		Direction getPhysicalDirection() const;
-		
-		void reset();
 		
 		void move();
 		void checkCollisions();

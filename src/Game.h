@@ -26,6 +26,8 @@ class Game : private sf::NonCopyable
 		sf::Time m_elapsedTime;
 		
 		World m_world;
+		
+		bool m_isPaused;
 };
 
 #endif // GAME_H
