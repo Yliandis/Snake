@@ -96,7 +96,7 @@ void Snake::extend()
 
 void Snake::speedUp()
 {
-	m_speed *= 1.08f;
+	m_speed *= 1.06f;
 }
 
 /***********
@@ -435,6 +435,7 @@ void Snake::loadBestScore()
 	}
 	
 	file >> m_bestScore;
+	file.close();
 }
 
 void Snake::saveBestScore() const
@@ -446,4 +447,5 @@ void Snake::saveBestScore() const
 	}
 	
 	file << m_bestScore;
+	file.close();
 }
