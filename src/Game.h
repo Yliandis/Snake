@@ -1,7 +1,7 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include "Window.h"
+#include "World.h"
 
 class Game : private sf::NonCopyable
 {
@@ -16,16 +16,16 @@ class Game : private sf::NonCopyable
 		void update();
 		void render();
 		
+		void handleWindowEvents();
+		
 	private:
 		
-		Window m_window;
+		sf::RenderWindow m_window;
 		
 		sf::Clock m_clock;
 		sf::Time m_elapsedTime;
 		
-	private:
-		
-		static const sf::Time UpdateTime;
+		World m_world;
 };
 
 #endif // GAME_H

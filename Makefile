@@ -13,11 +13,14 @@ all: $(O) $(B) $(O)/main.o
 $(O)/main.o: $(O)/Game.o
 	$(CC) $(S)/main.cpp -c -o $(O)/main.o $(STD) $(FLAGS)
 
-$(O)/Game.o: $(O)/Window.o
+$(O)/Game.o: $(O)/World.o
 	$(CC) $(S)/Game.cpp -c -o $(O)/Game.o $(STD) $(FLAGS)
 
-$(O)/Window.o:
-	$(CC) $(S)/Window.cpp -c -o $(O)/Window.o $(STD) $(FLAGS)
+$(O)/World.o: $(O)/Snake.o
+	$(CC) $(S)/World.cpp -c -o $(O)/World.o $(STD) $(FLAGS)
+
+$(O)/Snake.o:
+	$(CC) $(S)/Snake.cpp -c -o $(O)/Snake.o $(STD) $(FLAGS)
 
 clean: $(O) $(B)
 	rm -r $(O)
