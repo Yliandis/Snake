@@ -16,11 +16,14 @@ $(O)/main.o: $(O)/Game.o
 $(O)/Game.o: $(O)/World.o
 	$(CC) $(S)/Game.cpp -c -o $(O)/Game.o $(STD) $(FLAGS)
 
-$(O)/World.o: $(O)/Snake.o
+$(O)/World.o: $(O)/Snake.o $(O)/Textbox.o
 	$(CC) $(S)/World.cpp -c -o $(O)/World.o $(STD) $(FLAGS)
 
 $(O)/Snake.o:
 	$(CC) $(S)/Snake.cpp -c -o $(O)/Snake.o $(STD) $(FLAGS)
+
+$(O)/Textbox.o:
+	$(CC) $(S)/Textbox.cpp -c -o $(O)/Textbox.o $(STD) $(FLAGS)
 
 clean: $(O) $(B)
 	rm -r $(O)

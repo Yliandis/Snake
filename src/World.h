@@ -2,6 +2,7 @@
 #define WORLD_H
 
 #include "Snake.h"
+#include "Textbox.h"
 
 #include <cstdlib>
 #include <ctime>
@@ -31,6 +32,9 @@ class World : public sf::Drawable
 		sf::Vector2u m_foodPosition;
 		
 		sf::RectangleShape m_bounds [4];
+		
+		Textbox m_score;
+		Textbox m_lives;
 		
 		Snake m_snake;
 };

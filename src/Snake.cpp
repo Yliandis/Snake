@@ -74,7 +74,7 @@ void Snake::extend()
 
 void Snake::speedUp()
 {
-	m_speed *= 1.1f;
+	m_speed *= 1.08f;
 }
 
 /***********
