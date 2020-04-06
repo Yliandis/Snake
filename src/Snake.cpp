@@ -4,7 +4,13 @@
 Snake::Snake(float blockSize)
 : m_blockSize (blockSize)
 {
+	loadBestScore();
 	reset();
+}
+
+Snake::~Snake()
+{
+	saveBestScore();
 }
 
 void Snake::tick()
@@ -110,6 +116,11 @@ void Snake::setDirection(Direction direction)
 void Snake::increaseScore()
 {
 	++m_score;
+	
+	if (m_score > m_bestScore)
+	{
+		m_bestScore = m_score;
+	}
 }
 
 /***********
@@ -136,6 +147,11 @@ float Snake::getSpeed() const
 unsigned Snake::getScore() const
 {
 	return m_score;
+}
+
+unsigned Snake::getBestScore() const
+{
+	return m_bestScore;
 }
 
 unsigned Snake::getLives() const
@@ -296,4 +312,30 @@ void Snake::draw(sf::RenderTarget& target, sf::RenderStates states) const
 		rectangle.setPosition(sf::Vector2f (m_body[i].position) * m_blockSize);
 		target.draw(rectangle, states);
 	}
+}
+
+/*****************
+ * Files reading *
+ ****************/
+
+void Snake::loadBestScore()
+{
+	std::ifstream file ("media/save/score.save");
+	if (!file.is_open())
+	{
+		throw std::runtime_error ("Snake::loadBestScore() - Failed to load 'media/save/score.save'");
+	}
+	
+	file >> m_bestScore;
+}
+
+void Snake::saveBestScore() const
+{
+	std::ofstream file ("media/save/score.save");
+	if (!file.is_open())
+	{
+		throw std::runtime_error ("Snake::loadBestScore() - Failed to load 'media/save/score.save'");
+	}
+	
+	file << m_bestScore;
 }

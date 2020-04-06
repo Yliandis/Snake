@@ -21,6 +21,8 @@ class Textbox : public sf::Drawable
 		void add(const std::string&);
 		void clear();
 		
+		void setBackgroundColor(sf::Color);
+		
 	private:
 		
 		void build();

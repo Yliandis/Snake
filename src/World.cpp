@@ -4,10 +4,16 @@ World::World(sf::Vector2u size, float blockSize)
 : m_size (size)
 , m_blockSize (blockSize)
 , m_score (1, 20, 100, sf::Vector2f (0, size.y))
-, m_lives (1, 20, 100, sf::Vector2f (size.x - 100, size.y))
+, m_bestScore (1, 20, 100, sf::Vector2f ((size.x - 100) / 2, size.y))
+, m_lives (1, 20, 80, sf::Vector2f (size.x - 80, size.y))
 , m_snake (blockSize)
 {
+	m_score.setBackgroundColor(sf::Color::Black);
+	m_bestScore.setBackgroundColor(sf::Color::Black);
+	m_lives.setBackgroundColor(sf::Color::Black);
+	
 	m_score.add("Score: 0");
+	m_bestScore.add("Best: " + std::to_string(m_snake.getBestScore()));
 	
 	m_food.setFillColor(sf::Color::Red);
 	m_food.setRadius(m_blockSize / 2);
@@ -72,6 +78,7 @@ void World::update()
 		m_snake.extend();
 		m_snake.increaseScore();
 		m_score.add("Score: " + std::to_string(m_snake.getScore()));
+		m_bestScore.add("Best: " + std::to_string(m_snake.getBestScore()));
 		
 		resetFood();
 		
@@ -116,6 +123,7 @@ void World::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	}
 	
 	target.draw(m_score, states);
+	target.draw(m_bestScore, states);
 	target.draw(m_lives, states);
 	
 	target.draw(m_snake, states);

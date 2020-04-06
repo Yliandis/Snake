@@ -4,6 +4,8 @@
 #include <SFML/Graphics.hpp>
 
 #include <vector>
+#include <fstream>
+#include <stdexcept>
 
 struct SnakeSegment
 {
@@ -30,6 +32,7 @@ class Snake : public sf::Drawable
 	public:
 		
 		Snake(float blockSize);
+		~Snake();
 		
 		void tick();
 		
@@ -43,6 +46,7 @@ class Snake : public sf::Drawable
 		sf::Vector2u getPosition() const;
 		float getSpeed() const;
 		unsigned getScore() const;
+		unsigned getBestScore() const;
 		unsigned getLives() const;
 		bool isAlive() const;
 		
@@ -60,6 +64,9 @@ class Snake : public sf::Drawable
 		
 		virtual void draw(sf::RenderTarget&, sf::RenderStates) const;
 		
+		void loadBestScore();
+		void saveBestScore() const;
+		
 	private:
 		
 		SnakeContainer m_body;
@@ -69,6 +76,7 @@ class Snake : public sf::Drawable
 		Direction m_direction;
 		float m_speed;
 		unsigned m_score;
+		unsigned m_bestScore;
 		unsigned m_lives;
 		bool m_isAlive;
 };

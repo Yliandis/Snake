@@ -34,6 +34,7 @@ class World : public sf::Drawable
 		sf::RectangleShape m_bounds [4];
 		
 		Textbox m_score;
+		Textbox m_bestScore;
 		Textbox m_lives;
 		
 		Snake m_snake;

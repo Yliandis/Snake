@@ -43,6 +43,11 @@ void Textbox::clear()
 	updateRender();
 }
 
+void Textbox::setBackgroundColor(sf::Color color)
+{
+	m_backdrop.setFillColor(color);
+}
+
 /*******************
  * Private methods *
  ******************/
