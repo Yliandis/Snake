@@ -14,7 +14,7 @@ If you are on a linux system, you can install all of these with the following co
 
 	sudo apt-get install g++ make libsfml-dev
 
-Feel free to adapt the Makefile to your system, your compiler, etc.
+Feel free about adapting the Makefile to your system, your compiler, etc.
 
 Have fun !
 
@@ -23,7 +23,9 @@ Have fun !
 ## How to play
 
 Up, Down, Left, Right : Move the snake
+
 Space : Pause the game
+
 Escape : Quit the game
 
 You have 3 lives and lose 1 per collision with yourself or with the walls, use it well !

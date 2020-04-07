@@ -99,6 +99,7 @@ void World::update()
 	if (!m_snake.isAlive())
 	{
 		m_snake.reset();
+		resetFood();
 		m_score.add("Score: " + std::to_string(m_snake.getScore()));
 	}
 }
