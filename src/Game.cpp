@@ -1,7 +1,7 @@
 #include "Game.h"
 
 Game::Game()
-: m_window (sf::VideoMode (800, 632), "Snake", sf::Style::Default)
+: m_window (sf::VideoMode (800, 632), "Snake", sf::Style::Close)
 , m_elapsedTime (sf::Time::Zero)
 , m_world ({800u, 608u}, 16)
 , m_isPaused (false)

@@ -428,7 +428,8 @@ void Snake::draw(sf::RenderTarget& target, sf::RenderStates states) const
 
 void Snake::loadBestScore()
 {
-	std::ifstream file ("media/save/score.save");
+	std::ifstream file;
+	file.open("media/save/score.save");
 	if (!file.is_open())
 	{
 		throw std::runtime_error ("Snake::loadBestScore() - Failed to load 'media/save/score.save'");
@@ -440,7 +441,8 @@ void Snake::loadBestScore()
 
 void Snake::saveBestScore() const
 {
-	std::ofstream file ("media/save/score.save");
+	std::ofstream file;
+	file.open("media/save/score.save");
 	if (!file.is_open())
 	{
 		throw std::runtime_error ("Snake::loadBestScore() - Failed to load 'media/save/score.save'");
